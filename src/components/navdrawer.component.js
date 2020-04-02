@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function NavDrawer(props) {
+const NavDrawer = (props) => {
   const classes = useStyles();
   const [state, setState] = React.useState({
     right: false
@@ -46,15 +46,13 @@ export default function NavDrawer(props) {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {Object.entries(props.navLinks).map(([name, url]) => {
+        {Object.entries(props.navLinks).map(([key, value]) => {
           return (
-            <ListItem button key={name}>
-              <ListItemText primary={name}>
-                <Link to={url}>
-                    {name}
-                </Link>
-              </ListItemText>
-            </ListItem>
+            <Link to={value.url}>
+              <ListItem button key={key} style={{color: '#1c1c1c'}}>
+                <ListItemText primary={key} />
+              </ListItem>
+            </Link>
           )
         })}
       </List>
@@ -84,3 +82,5 @@ export default function NavDrawer(props) {
     </div>
   );
 }
+
+export default NavDrawer;

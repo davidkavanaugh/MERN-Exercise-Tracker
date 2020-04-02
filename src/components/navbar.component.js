@@ -7,17 +7,17 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import NavDrawer from './navdrawer.component';
 
-export default function Navbar() {
+const Navbar = () =>{
 
     const navLinks = {
         "Exercises": {
             "url": "/"
         },
         "New Exercise": {
-            "url": "/"
+            "url": "/create"
         },
         "New User": {
-            "url": "/"
+            "url": "/user"
         }
     };
 
@@ -31,11 +31,11 @@ export default function Navbar() {
                                 Exercise Tracker
                             </Typography>
                             <div className="nav-links">
-                                {Object.entries(navLinks).map(([name, url]) => {
+                                {Object.entries(navLinks).map(([key, value]) => {
                                     return (
                                         <Typography variant="h6" className="link">
-                                            <Link to={url}>
-                                                {name}
+                                            <Link to={value.url}>
+                                                {key}
                                             </Link>
                                         </Typography>
                                     )
@@ -56,3 +56,5 @@ export default function Navbar() {
         </div>
     );
 }
+
+export default Navbar; 
