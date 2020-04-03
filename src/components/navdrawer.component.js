@@ -1,14 +1,9 @@
 import React from "react";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import IconButton from "@material-ui/core/IconButton";
+import { Drawer, IconButton, Tabs, Tab } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Link } from 'react-router-dom';
-
+import { Route, Link } from 'react-router-dom';
+import './navbar.component.css';
 
 const useStyles = makeStyles({
   list: {
@@ -24,6 +19,11 @@ const NavDrawer = (props) => {
   const [state, setState] = React.useState({
     right: false
   });
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const toggleDrawer = (anchor, open) => event => {
     if (
@@ -35,29 +35,6 @@ const NavDrawer = (props) => {
 
     setState({ ...state, [anchor]: open });
   };
-
-  const list = anchor => (
-    <div
-      className={clsx(classes.list, {
-        [classes.fullList]: anchor === "top" || anchor === "bottom"
-      })}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <List>
-        {Object.entries(props.navLinks).map(([key, value]) => {
-          return (
-            <Link to={value.url} key={key}>
-              <ListItem button style={{color: '#1c1c1c'}}>
-                <ListItemText primary={key} />
-              </ListItem>
-            </Link>
-          )
-        })}
-      </List>
-    </div>
-  );
 
   return (
     <div>
@@ -75,7 +52,34 @@ const NavDrawer = (props) => {
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}
           >
-            {list(anchor)}
+            <Route
+                path="/"
+                render={({ location }) => (
+                  <div>
+                    <Tabs
+                      orientation="vertical"
+                      variant="scrollable"
+                      value={location.pathname}
+                      onChange={handleChange}
+                      aria-label="Vertical tabs example"
+                      className={classes.tabs}
+                    >
+                      {Object.entries(props.navLinks).map(([key, value]) => {
+                        return (
+                          <Tab 
+                              label={key}
+                              value={value.url}
+                              component={Link}
+                              to={value.url}
+                              style={{display: 'flex', flexDirection:'column'}}
+                              className="tab"
+                          />
+                        )}
+                      )}
+                    </Tabs>
+                  </div>
+                )}
+            />
           </Drawer>
         </React.Fragment>
       ))}

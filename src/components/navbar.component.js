@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import './navbar.component.css';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Hidden from '@material-ui/core/Hidden';
-import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
 import NavDrawer from './navdrawer.component';
+import {Button, Tabs, Tab, AppBar, Hidden} from '@material-ui/core/';
+import { Route, Switch, Link } from 'react-router-dom';
 
 const Navbar = () =>{
 
@@ -22,39 +19,73 @@ const Navbar = () =>{
     };
 
     return (
-        <div>
+        <div id="navbar">
             <AppBar position="static">
-                <Toolbar>
-                    <Hidden mdDown>
-                        <div className="nav">
-                            <Typography variant="h6">
-                                Exercise Tracker
-                            </Typography>
-                            <div className="nav-links">
+                <Route
+                    path="/"
+                    render={({ location }) => (
+                        <Fragment>
+                            <Hidden mdDown>
+                                <div className="nav">
+                                    <Link to="/">
+                                        <Button 
+                                            style={{
+                                                color: 'white', 
+                                                textTransform: 'capitalize',
+                                                padding: '10px 20px',
+                                                fontSize: '1.2rem'
+                                            }}
+                                        >
+                                            Exercise Tracker
+                                        </Button>
+                                    </Link>
+                                    <Tabs value={location.pathname}>
+                                        {Object.entries(navLinks).map(([key, value]) => {
+                                            return (
+                                                <Tab 
+                                                    label={key}
+                                                    value={value.url}
+                                                    component={Link}
+                                                    to={value.url}
+                                                    style={{
+                                                        padding: '15px 0px'
+                                                    }}
+                                                />
+                                            )
+                                        })}
+                                    </Tabs>
+                                </div>
+                            </Hidden>
+                            <Hidden mdUp>
+                                <div className="nav">
+                                    <Link to="/">
+                                        <Button 
+                                            style={{
+                                                color: 'white', 
+                                                textTransform: 'capitalize',
+                                                padding: '10px 20px',
+                                                fontSize: '1.2rem'
+                                            }}
+                                        >
+                                            Exercise Tracker
+                                        </Button>
+                                    </Link>
+                                    <NavDrawer navLinks={navLinks} />
+                                </div>
+                            </Hidden>                            
+                            <Switch>
                                 {Object.entries(navLinks).map(([key, value]) => {
                                     return (
-                                        <Typography variant="h6" className="link" key={key}>
-                                            <Link to={value.url}>
-                                                {key}
-                                            </Link>
-                                        </Typography>
+                                        <Route path={value.url} />
                                     )
                                 })}
-                            </div>
-                        </div>
-                    </Hidden>
-                    <Hidden mdUp>
-                        <div className="nav">
-                            <Typography variant="h6" style={{padding: '7px 7px'}}>
-                                Exercise Tracker
-                            </Typography>
-                            <NavDrawer navLinks={navLinks} />
-                        </div>
-                    </Hidden>
-                </Toolbar>
-            </AppBar>    
+                            </Switch>
+                        </Fragment>
+                    )}
+                />
+            </AppBar>
         </div>
-    );
+    )
 }
 
 export default Navbar; 
