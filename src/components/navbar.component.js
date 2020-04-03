@@ -33,7 +33,7 @@ const Navbar = () =>{
                             <div className="nav-links">
                                 {Object.entries(navLinks).map(([key, value]) => {
                                     return (
-                                        <Typography variant="h6" className="link">
+                                        <Typography variant="h6" className="link" key={key}>
                                             <Link to={value.url}>
                                                 {key}
                                             </Link>

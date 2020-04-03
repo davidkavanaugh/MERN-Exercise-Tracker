@@ -48,8 +48,8 @@ const NavDrawer = (props) => {
       <List>
         {Object.entries(props.navLinks).map(([key, value]) => {
           return (
-            <Link to={value.url}>
-              <ListItem button key={key} style={{color: '#1c1c1c'}}>
+            <Link to={value.url} key={key}>
+              <ListItem button style={{color: '#1c1c1c'}}>
                 <ListItemText primary={key} />
               </ListItem>
             </Link>
